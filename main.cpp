@@ -54,13 +54,6 @@ void input(Snake *s)
 	}
 }
 
-void show_gameover(Snake *s)
-{
-	char n;
-	std::cout << "You died.\nThe length was " << s->cells.size() << '\n';
-	std::cin >> n;
-}
-
 void generate_food(Field *f)
 {
 	srand(time(0));
@@ -79,7 +72,8 @@ void logic(Field *f, Snake *s)
 	switch(s->checkmove())
 	{
 		case SNAKE_DIED:
-			show_gameover(s);
+			f->draw();
+			std::cout << "length: " << s->cells.size();
 			quit = true;
 			return;;
 		case SNAKE_ATE_FOOD:
