@@ -17,10 +17,12 @@ struct Vector
 struct Snake
 {
 	Field *field;
+	bool died;
 	std::vector<Cell*> cells;
 	Vector move_vector;
 	Snake(Field *f, int x, int y, Vector v);
 	int checkmove();
+	void make_turn();
 	void move();
 	void grow();
 };

@@ -9,6 +9,7 @@
 
 Snake::Snake(Field *f, int x, int y, Vector v) : field(f), move_vector(v)
 {
+	died = false;
 	cells.push_back(f->getcell(x,y));
 	HEAD->object = SNAKE_CHAR;
 }
@@ -62,8 +63,29 @@ void Snake::grow()
 	else if (field->getcell(LAST_ELEMENT->x + (LAST_ELEMENT->x - PENULTIMATE_ELEMENT->x),
 							LAST_ELEMENT->y + (LAST_ELEMENT->y - PENULTIMATE_ELEMENT->y)))
 	{
+		if (field->getcell(LAST_ELEMENT->x + (LAST_ELEMENT->x - PENULTIMATE_ELEMENT->x),
+							LAST_ELEMENT->y + (LAST_ELEMENT->y - PENULTIMATE_ELEMENT->y))->object == SNAKE_CHAR)
+			return;
 		cells.push_back(field->getcell(LAST_ELEMENT->x + (LAST_ELEMENT->x - PENULTIMATE_ELEMENT->x),
 									   LAST_ELEMENT->y + (LAST_ELEMENT->y - PENULTIMATE_ELEMENT->y)));
 		field->getcell(LAST_ELEMENT->x, LAST_ELEMENT->y)->object = SNAKE_CHAR;
 	}
+}
+
+void Snake::make_turn()
+{
+	switch(checkmove())
+	{
+		case SNAKE_DIED:
+			field->draw();
+			std::cout << "length: " << cells.size();
+			died = true;
+			return;
+		case SNAKE_ATE_FOOD:
+			grow();
+			move();
+			field->generate_food();
+			return;
+	}
+	move();
 }

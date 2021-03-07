@@ -15,6 +15,7 @@ struct Field
 
 	Cell* getcell(int x, int y);
 	void draw();
+	void generate_food();
 	void movecell(int x1, int y1, int x2, int y2);
 
 	Field(int sx, int sy);

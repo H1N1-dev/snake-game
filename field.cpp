@@ -1,6 +1,8 @@
 #include "field.hpp"
+#include "snake.hpp"
 #include <string>
 #include <iostream>
+#include <ctime>
 
 // toric field
 Cell* Field::getcell(int x, int y)
@@ -13,7 +15,6 @@ Cell* Field::getcell(int x, int y)
 	if (x >= sizeX && y >= sizeY) return getcell(-(sizeX-x), -(sizeY-y));
 	if (x < 0 && y >= sizeY) return getcell(sizeX+x, -(sizeY-y));
 	if (x >= sizeX && y < 0) return getcell(-(sizeX-x), sizeY+y);
-	if (x < 0 || y < 0 || x > sizeX || y > sizeY) return nullptr;
 	return &cells[x * sizeY + y];
 }
 
@@ -62,4 +63,18 @@ void Field::draw()
 		render += '#';
 	render += "#\n";
 	std::cout << render;
+}
+
+void Field::generate_food()
+{
+	srand(time(0));
+	int x = rand() % sizeX;
+	int y = rand() % sizeY;
+	while (getcell(x,y)->object == SNAKE_CHAR)
+	{
+		srand(time(0));
+		x = rand() % sizeX;
+		y = rand() % sizeY;
+	}
+	getcell(x,y)->object = FOOD_CHAR;
 }
